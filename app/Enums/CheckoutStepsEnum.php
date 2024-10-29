@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum CkeckoutStepsEnum: int
+enum CheckoutStepsEnum: int
 {
     case INFORMATION = 1;
     case SHIPPING = 2;

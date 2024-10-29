@@ -1,9 +1,8 @@
-<x-app-layout>
+
     <div class="bg-tertiary-900">
         <!-- Background color split screen for large screens -->
         <div class="fixed left-0 top-0 hidden h-full w-1/2 bg-tertiary-900 lg:block" aria-hidden="true"></div>
         <div class="fixed right-0 top-0 hidden h-full w-1/2 bg-tertiary-800 lg:block" aria-hidden="true"></div>
-
 
         <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8 lg:pt-16">
 
@@ -16,20 +15,23 @@
                     </dl>
 
                     <x-checkout.product-list>
-                        <x-checkout.product-item
-                            name="High Wall Tote"
-                            price="210,00"
-                            :features="['White and black', '15L']"
-                            quantity="2"
-                            image="https://tailwindui.com/img/ecommerce-images/checkout-page-07-product-01.jpg"
-                        />
+                        @foreach($cart['skus'] as $sku)
+                            <x-checkout.product-item
+                                :name="$sku['name']"
+                                :price="$sku['price']"
+                                :features="collect($sku['features'])->map(fn($feature) => $feature['name'] . ':' .$feature['pivot']['value'])"
+                                :quantity="$sku['pivot']['quantity']"
+                                image="https://tailwindui.com/img/ecommerce-images/checkout-page-07-product-01.jpg"
+                            />
+                        @endforeach
                     </x-checkout.product-list>
 
                     <dl class="space-y-6 border-t border-white border-opacity-10 pt-6 text-sm font-medium">
 
-                        <x-checkout.summary-item title="Subtotal" value="210,00" />
-                        <x-checkout.summary-item title="Frete" value="0" />
-                        <x-checkout.summary-item title="Total"  value="210,00" :is-last="true" />
+                        <x-checkout.summary-item title="Subtotal" :value="$cart['total']"/>
+                        <x-checkout.summary-item title="Frete" value="0"/>
+                        <x-checkout.summary-item title="Total" :value="$cart['total']" :is-last="true"/>
+
 
                     </dl>
 
@@ -121,4 +123,3 @@
             </section>
         </div>
     </div>
-</x-app-layout>
